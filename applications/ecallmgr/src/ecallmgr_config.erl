@@ -14,6 +14,7 @@
         ]).
 -export([get/1, get/2, get/3
         ,get_json/1, get_json/2, get_json/3
+        ,get_jsons/1, get_jsons/2, get_jsons/3
         ,get_integer/1, get_integer/2, get_integer/3
         ,get_boolean/1, get_boolean/2, get_boolean/3
         ,is_true/1, is_true/2, is_true/3
@@ -125,6 +126,31 @@ as_json_value(V, Default) ->
     case kz_json:is_json_object(V) of
         'true' -> V;
         'false' -> Default
+
+-spec get_jsons(kz_json:path()) -> api_objects().
+-spec get_jsons(kz_json:path(), Default) -> kz_json:objects() | Default.
+-spec get_jsons(kz_json:path(), Default, kz_json:path()) -> kz_json:objects() | Default.
+get_jsons(Key) ->
+    get_jsons(Key, 'undefined').
+
+get_jsons(Key, Default) ->
+    case get(Key, Default) of
+        Default -> Default;
+        JObjs ->
+            case lists:all(fun kz_json:is_json_object/1, JObjs) of
+                false -> Default;
+                true -> JObjs
+            end
+    end.
+
+get_jsons(Key, Default, Node) ->
+    case get(Key, Default, Node) of
+        Default -> Default;
+        JObjs ->
+            case lists:all(fun kz_json:is_json_object/1, JObjs) of
+                false -> Default;
+                true -> JObjs
+            end
     end.
 
 -spec get_integer(kz_json:path()) -> api_integer().
