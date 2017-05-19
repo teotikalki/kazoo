@@ -145,9 +145,7 @@ validate_document(Context, Id, ?HTTP_PUT) ->
 
 validate_document(Context, Id, ?HTTP_POST) ->
     RequestData = strip_id(kz_doc:public_fields(cb_context:req_data(Context))),
-    DefaultConfig = kapps_config_doc:default_config(Id, kapps_config_doc:get_keys(RequestData)),
-    FullConfig = kz_json:merge(DefaultConfig, RequestData),
-    validate_document_request(Context, Id, FullConfig);
+    validate_document_request(Context, Id, RequestData);
 
 validate_document(Context, Id, ?HTTP_PATCH) ->
     RequestData = strip_id(kz_doc:public_fields(cb_context:req_data(Context))),
