@@ -126,6 +126,7 @@ as_json_value(V, Default) ->
     case kz_json:is_json_object(V) of
         'true' -> V;
         'false' -> Default
+    end.
 
 -spec get_jsons(kz_json:path()) -> api_objects().
 -spec get_jsons(kz_json:path(), Default) -> kz_json:objects() | Default.
